@@ -55,4 +55,5 @@ python test_ui.py
 
 
 ### Автор:
- * Савельева Анастасия (Visteria09@yandex.ru, https://github.com/Esperansa08)
+ * Савельева Анастасия 
+ * [Почта](Visteria09@yandex.ru), [Github](https://github.com/Esperansa08) 
