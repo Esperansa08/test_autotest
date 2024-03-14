@@ -19,7 +19,6 @@ def driver_init():
     return driver
 
 
-@allure.title("Test Authentication")
 def test_check_page(driver):
     """Поиск и проверка попадания на страницу "Проверка настроек ПК"."""
     try:
