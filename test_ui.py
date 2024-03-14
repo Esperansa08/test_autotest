@@ -1,102 +1,124 @@
+import os
 import allure
-import pytest
-from time import sleep
-
-# import requests
-# from bs4 import BeautifulSoup
 from selenium import webdriver
-
-from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
-# from selenium.webdriver.common.keys import Keys
 from webdriver_manager.chrome import ChromeDriverManager
 
-PAUSE_DURATION_SECONDS = 5
+PAUSE_DURATION_SECONDS = 10
 
 
-def wait_of_element_located(xpath, driver):
-    """ Функция ожидания элементов."""
-    element = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.XPATH, xpath))
-    )
-    return element
-
-
-#@pytest.fixture
 def driver_init():
-    """ Инициализация драйвера."""
+    """Инициализация драйвера."""
     service = Service(executable_path=ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service)
     driver.maximize_window()
     driver.get("https://rn.tektorg.ru/")
-    sleep(PAUSE_DURATION_SECONDS)
+    driver.implicitly_wait(PAUSE_DURATION_SECONDS)
     return driver
-    #driver.close()
 
 
 @allure.title("Test Authentication")
-def test_acc_page(driver):
-    """ Поиск и проверка попадания на страницу "Аккредитация на ЭТП"."""
+def test_check_page(driver):
+    """Поиск и проверка попадания на страницу "Проверка настроек ПК"."""
     try:
-        title_text = wait_of_element_located('//*[@id="ext-element-97"]',
-                                             driver)
-        # title_text = wait_of_element_located('//*[@id="ext-element-92"]',
-        #                                      driver)
-        title_text.click()
+        text_menu = driver.find_element(By.XPATH, '//*[@id="ext-element-92"]')
+        text_menu.click()
+        driver.implicitly_wait(PAUSE_DURATION_SECONDS)
     except NoSuchElementException:
-        print(f"{test_acc_page.__doc__} - Элемент не найден!")
-    sleep(PAUSE_DURATION_SECONDS)
+        print(f"{test_check_page.__doc__} - Элемент не найден!")
 
 
-def test_get_signature_page(driver):
-    """ Проверка кнопки "Получить электронную подпись."""
+def test_title_page(driver):
+    """Проверка титульника страницы."""
     try:
-        button_signature = wait_of_element_located(
-            '//*[@id="button-1076-btnInnerEl"]', driver)
-        button_signature.click()
+        title_text = driver.find_element(By.XPATH,
+                                         '//*[@id="container-1069-innerCt"]')
+        assert (
+            title_text.get_attribute("innerHTML") == "Проверка настроек ПК"
+        ), """Текст не соответствует требуемому!"""
+
     except NoSuchElementException:
-        print(f"{test_get_signature_page.__doc__} - Элемент не найден!")
-    sleep(PAUSE_DURATION_SECONDS)
+        print(f"{test_title_page.__doc__} - Элемент не найден!")
 
 
-def test_check_signature_page(driver):
-    """ Проверка перехода на страницу e-signature."""
+def test_check_instructions(driver):
+    """Инструкция по настройке ПК."""
+    try:
+        button = driver.find_element(By.XPATH,
+                                     '//*[@id="button-1072-btnInnerEl"]')
+        button.click()
+
+    except NoSuchElementException:
+        print(f"{test_check_instructions.__doc__} - Элемент не найден!")
+
+
+def test_check_instructions_page(driver):
+    """Проверка перехода на страницу "Электронная торговая площадка"."""
     if len(driver.window_handles) > 1:
         driver.switch_to.window(driver.window_handles[1])
-        e_signature = "https://service.tektorg.ru/e-signature"
-        print(driver.current_url == e_signature)
-        # если не совершен переход на страницу e_signature, то в терминале
-        # выдается сообщение "Не перешел на страницу e-signature!""
+        wiki_tektorg = "https://wiki.tektorg.ru/"
         assert (
-            driver.current_url == e_signature
-        ), """Не перешел на страницу
-        e-signature!"""
-        sleep(PAUSE_DURATION_SECONDS)
+            driver.current_url == wiki_tektorg
+        ), """Не перешел на страницу "Электронная торговая площадка"!"""
+        driver.implicitly_wait(PAUSE_DURATION_SECONDS)
         driver.switch_to.window(driver.window_handles[0])
 
 
-def test_check_import_signature(driver):
-    """ Проверка кнопки "Импортировать данные из электронной подписи"."""
-    sleep(PAUSE_DURATION_SECONDS)
+def test_check_download(driver):
+    """Проверить загрузку файлов."""
     try:
-        time = driver.find_element(By.XPATH, '//*[@id="button-1080-btnInnerEl"]')
-        print(time.title)
-        time.click()
-    except NoSuchElementException:
-        print(f"{test_check_import_signature.__doc__} - Элемент не найден!")
+        dowload_wnd = driver.find_element(
+            By.XPATH, ' //*[@id="button-1078-btnInnerEl"]'
+        )
+        dowload_wnd.click()
+        driver.implicitly_wait(PAUSE_DURATION_SECONDS)
 
-# Действия с формами
-# input_username.send_keys("standard_user")
-# input_password.send_keys("secret_sauce")
-# login_button.send_keys(Keys.RETURN)
+        elm = driver.find_element(By.XPATH, "//input[@type='file']")
+        elm.send_keys(os.getcwd() + "/image/1674386530_40372364.jpg")
+
+        driver.implicitly_wait(PAUSE_DURATION_SECONDS)
+        btn_download = driver.find_element(
+            By.XPATH, '//*[@id="button-1110-btnInnerEl"]'
+        )
+        btn_download.click()
+
+        btn_close = driver.find_element(By.XPATH, '//*[@id="button-1121"]')
+        btn_close.click()
+
+    except NoSuchElementException:
+        print(f"{test_check_download.__doc__} - Элемент не найден!")
+
+
+def test_check_settings(driver):
+    """Проверить настройки ПК."""
+    try:
+        button = driver.find_element(By.XPATH,
+                                     '//*[@id="button-1076-btnInnerEl"]')
+        button.click()
+        driver.implicitly_wait(PAUSE_DURATION_SECONDS)
+
+        small_arrow = driver.find_element(By.XPATH,
+                                          '//*[@id="ext-198-trigger-picker"]')
+        small_arrow.click()
+        driver.implicitly_wait(PAUSE_DURATION_SECONDS)
+
+        cancel_button = driver.find_element(
+            By.XPATH, '//*[@id="button-1093-btnInnerEl"]'
+        )
+        cancel_button.click()
+        driver.implicitly_wait(PAUSE_DURATION_SECONDS)
+
+    except NoSuchElementException:
+        print(f"{test_check_settings.__doc__} - Элемент не найден!")
 
 
 if __name__ == "__main__":
     driver = driver_init()
-    test_acc_page(driver)
-    test_get_signature_page(driver)
-    test_check_signature_page(driver)
-    test_check_import_signature(driver)
+    test_check_page(driver)
+    test_title_page(driver)
+    test_check_instructions(driver)
+    test_check_instructions_page(driver)
+    test_check_settings(driver)
+    test_check_download(driver)
