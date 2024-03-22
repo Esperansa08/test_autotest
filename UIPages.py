@@ -4,7 +4,6 @@ from selenium.webdriver.common.by import By
 
 
 class UiSeacrhLocators:
-    # LOCATOR_SEARCH_FIELD = (By.ID, "text")
     LOCATOR_CHECK_PAGE = (By.XPATH, '//*[@id="ext-element-92"]')
     LOCATOR_TITLE = (By.XPATH, '//*[@id="container-1069-innerCt"]')
     LOCATOR_NAVIGATION_BAR = (By.XPATH, ".service__name")
