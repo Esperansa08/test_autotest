@@ -14,11 +14,5 @@ class BasePage:
             message=f"Не найден элемент {locator}",
         )
 
-    def find_elements(self, locator, time=10):
-        return WebDriverWait(self.driver, time).until(
-            EC.presence_of_all_elements_located(locator),
-            message=f"Не найдены элементы {locator}",
-        )
-
     def go_to_site(self):
         return self.driver.get(self.base_url)

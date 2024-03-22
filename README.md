@@ -66,7 +66,6 @@ browser = <selenium.webdriver.chrome.webdriver.WebDriver (session="740bef11da404
     def test_title_page(browser):
         """Проверка титульника страницы."""
         title_text = SearchHelper(browser)
-        #title_text.go_to_site()
         title = title_text.check_element_text()
 >       assert title == "Проверка настроек ПК1"
 E       AssertionError: assert 'Проверка настроек ПК' == 'Проверка настроек ПК1'
