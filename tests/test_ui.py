@@ -19,7 +19,6 @@ def test_check_instructions(browser):
     """Инструкция по настройке ПК."""
     check_link = SearchHelper(browser)
     check_link.click_on_the_check_instructions()
-    # check_link.go_to_other_site()
 
 
 def test_check_settings(browser):
