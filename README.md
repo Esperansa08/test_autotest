@@ -80,7 +80,7 @@ test_ui.py:16: AssertionError
 FAILED test_ui.py::test_title_page - AssertionError: assert 'Проверка настроек ПК' == 'Проверка настроек ПК1'
 ```
 ### Пример успешного прохождения тестов
-======================================================================== test session starts ===============================================================
+============================================ test session starts =====================================================
 
 platform win32 -- Python 3.11.3, pytest-8.1.1, pluggy-1.4.0 -- D:\Dev\test_autotest\venv\Scripts\python.exe
 rootdir: D:\Dev\test_autotest
@@ -98,7 +98,7 @@ tests/test_ui.py::test_check_settings PASSED                                    
 tests/test_ui.py::test_check_download [22952:24460:0328/214630.090:ERROR:device_event_log_impl.cc(195)] [21:46:30.089] USB: usb_service_win.cc:105 SetupDiGetDeviceProperty({{A45C254E-DF1C-4EFD-8020-67D146A850E0}, 6}) failed: ╨н╨╗╨╡╨╝╨╡╨╜╤В ╨╜╨╡ ╨╜╨░╨╣╨┤╨╡╨╜. (0x490)
 PASSED                                                                                                                   [100%]
 
-=================================================================== 5 passed, 1 warning in 16.04s =============================================================
+====================================== 5 passed, 1 warning in 16.04s =================================================
 
 
 ### Автор
